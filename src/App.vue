@@ -27,12 +27,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<RouterView />
 		</AppContent>
 
-		<RouterView name="details" />
+		<RouterView name="sidebar" />
 	</Content>
 </template>
 
 <script>
-import AppNavigation from './components/AppNavigation/AppNavigation.vue'
+import AppNavigation from './views/AppNavigation.vue'
 import client from './services/cdav.js'
 
 import AppContent from '@nextcloud/vue/dist/Components/AppContent'
