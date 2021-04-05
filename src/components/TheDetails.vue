@@ -86,10 +86,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				@click="togglePinned(task)">
 				{{ task.pinned ? $t('tasks', 'Unpin') : $t('tasks', 'Pin') }}
 			</ActionButton>
-			<ActionButton
-				icon="icon-download">
+			<ActionLink
+				icon="icon-download"
+				:href="downloadURL"
+				:close-after-click="true">
 				{{ $t('tasks', 'Download') }}
-			</ActionButton>
+			</ActionLink>
 			<ActionButton v-if="!readOnly"
 				icon="icon-delete"
 				@click="removeTask">
@@ -470,6 +472,7 @@ import { linkify } from '../directives/linkify.js'
 
 import moment from '@nextcloud/moment'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import ActionLink from '@nextcloud/vue/dist/Components/ActionLink'
 import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
 import AppSidebar from '@nextcloud/vue/dist/Components/AppSidebar'
 import AppSidebarTab from '@nextcloud/vue/dist/Components/AppSidebarTab'
@@ -484,6 +487,7 @@ export default {
 		AppSidebar,
 		AppSidebarTab,
 		ActionButton,
+		ActionLink,
 		EmptyContent,
 		DatetimePicker,
 		Multiselect,
@@ -572,6 +576,19 @@ export default {
 					: this.$t('tasks', 'Last modified {date}', { date: this.task.modifiedMoment.calendar() })
 				: ''
 		},
+		/**
+		 * Returns the download url as a string or null if event is loading or does not exist on the server (yet)
+		 *
+		 * @returns {string|null}
+		 */
+		downloadURL() {
+			if (!this.task) {
+				return null
+			}
+
+			console.debug(this.task?.url)
+
+			return this.task?.url + '?export'
 		},
 		taskStatusLabel() {
 			return this.loading ? this.$t('tasks', 'Loading task from server.') : this.$t('tasks', 'Task not found!')
